@@ -3,5 +3,10 @@ if(process.argv[2] === 'build'){
 	baseUrl = './';
 }
 module.exports = {
-    baseUrl
+    baseUrl,
+    outputDir: 'app/dist',
+    configureWebpack: {
+        target: 'node-webkit',
+        mode: 'development'
+    }
 };

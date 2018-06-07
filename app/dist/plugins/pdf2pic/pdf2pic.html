@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>PDF转图片</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="titlebar">
+    <h1 class="title draggable">PDF转图片</h1>
+    <div class="titlebar-tool">
+        <button onclick="titlebarFn('min')">&minus;</button>
+        <button onclick="titlebarFn('toggle',this)" class="full"><i></i></button>
+        <button onclick="titlebarFn('close')">&times;</button>
+    </div>
+</div>
+<div class="toolbar">
+	<button onclick="toolbarFn('chosefile')">打开PDF</button>
+	<button onclick="toolbarFn('start')">开始</button>
+	<button onclick="toolbarFn('params')">输出参数</button>
+</div>
+<form class="set-params" data-by="params">
+	<p>渲染比例： <input name="scale" class="form-control" type="number" placeholder="默认为: 2">
+		<span class="cur-val">当前： <b id="cur-scale"></b></span>
+	</p>
+	<p>输出质量： <input name="quality" class="form-control" type="number" placeholder="取 0 到 1">
+		<span class="cur-val">当前： <b id="cur-quality"></b></span>
+	</p>
+	<p>
+		<button type="button" onclick="setParamsFn(1)">确定</button>
+		<button type="button" onclick="setParamsFn(0)">取消</button>
+		<button type="button" onclick="setParamsFn(2)">重置</button>
+	</p>
+</form>
+<div id="list" class="list">
+	<!-- <canvas id="the-canvas"></canvas> -->
+</div>
+<div class="dialog">
+	<div class="dialog-body">
+		<div class="dialog-tools">
+			<button class="dialog-close" onclick="dialogCloseFn()">&times;</button>
+		</div>
+		<div class="dialog-progress-txt">0/0</div>
+		<div class="dialog-progress"><i class="dialog-progress-value"></i></div>
+		<div class="dialog-progress-txt">0/0</div>
+		<div class="dialog-progress"><i class="dialog-progress-value"></i></div>
+		<div class="dialog-content"></div>
+	</div>
+</div>
+<script src="pdf.worker.min.js"></script>
+<script src="pdf.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
