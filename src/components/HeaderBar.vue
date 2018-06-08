@@ -1,25 +1,20 @@
 <template>
     <header>
-        <title-bar title="标题"></title-bar>
-        <menu-bar></menu-bar>
-        <sub-menu></sub-menu>
+        <title-bar :store="store"/>
+        <menu-bar :store="store"/>
     </header>
 </template>
 
 <script>
     import TitleBar from './TitleBar';
-    import MenuBar from './MenuBar';
+    import MenuBar from "./MenuBar";
 
     export default {
         name: "header-bar",
         props: ['store'],
         components: {
+            MenuBar,
             TitleBar,
-            MenuBar
         }
     }
 </script>
-
-<style>
-
-</style>

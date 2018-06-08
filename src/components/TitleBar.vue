@@ -10,11 +10,17 @@
 </template>
 
 <script>
-    import g from '../global';
-    const win = g.win;
+    import vars from '../vars';
+    import defaults from '../defaults';
+
+    const win = vars.win;
     export default {
         name: "title-bar",
-        props: ['title'],
+        data(){
+            return {
+                title: defaults.usercfg.title || ''
+            }
+        },
         methods: {
             minimize(){
                 win.minimize();
@@ -39,7 +45,3 @@
         }
     }
 </script>
-
-<style>
-
-</style>

@@ -41,7 +41,7 @@
 
 <script>
     export default {
-        name: "sub-menu",
+        name: "SubMenu",
         props: ['drop'],
         methods: {
             submenuFn(){

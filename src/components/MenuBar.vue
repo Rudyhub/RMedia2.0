@@ -1,40 +1,37 @@
 <template>
     <div class="toolbar">
-        <button class="toolbar-item" name="chosefile" v-on:click="menuFn" :class="{'active-1': drop === 'chosefile'}">
+        <button class="toolbar-item" name="chosefile" v-on:click="menuFn" :class="{'active-1': store.toolbar.drop === 'chosefile'}">
             <i class="icon icon-folder-open"></i> 选择文件
         </button>
-        <button class="toolbar-item" name="chosedir" v-on:click="menuFn" :title="'选择输出目录，当前：'+output" :class="{'active-1': drop === 'chosedir'}">
+        <button class="toolbar-item" name="chosedir" v-on:click="menuFn" :title="'选择输出目录，当前：'+output" :class="{'active-1': store.toolbar.drop === 'chosedir'}">
             <i class="icon icon-floppy-disk"></i> 保存目录
         </button>
-        <button class="toolbar-item" name="batch" v-on:click="menuFn" :class="{'active-1': drop === 'batch'}">
+        <button class="toolbar-item" name="batch" v-on:click="menuFn" :class="{'active-1': store.toolbar.drop === 'batch'}">
             <i class="icon icon-cog"></i> 批量设置
         </button>
-        <button class="toolbar-item" name="more" v-on:click="menuFn" :class="{'active-1': drop === 'more'}">
+        <button class="toolbar-item" name="more" v-on:click="menuFn" :class="{'active-1': store.toolbar.drop === 'more'}">
             <i class="icon icon-list"></i> 更多功能
         </button>
-        <button class="toolbar-item" v-on:click="convertFn" :class="{'active-1': isStarted}">
-            <i class="icon icon-stack"></i> {{isStarted ? '停止':'开始'}}
+        <button class="toolbar-item" v-on:click="convertFn" :class="{'active-1': store.isStarted}">
+            <i class="icon icon-stack"></i> {{store.isStarted ? '停止':'开始'}}
         </button>
         <input class="toolbar-item" type="range" min=".19" max=".98" step="0.01" v-on:input="zoomItemFn">
     </div>
 </template>
 
 <script>
-    import g from '../global.js';
+    // import vars from '../vars.js';
 
-    const nw = g.nw;
-    const win = nw.Window.get();
+    // const nw = vars.nw;
+    // const win = vars.win;
 
     export default {
-        name: "menu-bar",
-        data(){
-            return {
-                drop: '',
-                isStarted: false
-            }
-        },
+        name: "MenuBar",
+        props: ['store'],
         methods: {
-            menuFn(e){
+            menuFn(e) {
+                this.store.toolbar.drop = e.currentTarget.name;
+                /*
                 let target = e.currentTarget,
                     name = target.name;
 
@@ -45,7 +42,6 @@
                     this.x = e.x;
                     this.y = e.y+30;
                 }
-                console.log(name);
                 switch(name){
                     case 'chosefile': g.inputEl.value = ''; g.inputEl.click(); break;
                     case 'chosedir': g.outputEl.click(); break;
@@ -59,7 +55,7 @@
                             width: Math.round(win.width*.8),
                             height: Math.round(win.height*.8)
                         });
-                        break;/*
+                        break;
                     case 'concat':
                     {
                         let tmpType,
@@ -155,13 +151,13 @@
                         break;
                     case 'helpBook':
                         //nw.Shell.openExternal(config.usercfg.documentation);
-                        break;*/
-                }
+                        break;
+                }*/
             },
-            convertFn(){
+            convertFn() {
 
             },
-            zoomItemFn(){
+            zoomItemFn() {
 
             }
         }
