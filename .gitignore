@@ -20,4 +20,7 @@ yarn-error.log*
 *.sw*
 
 # nwjs folder and inner files
-/nw
+nw/
+
+# ffmpeg
+ffmpeg/

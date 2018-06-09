@@ -1,8 +1,8 @@
 <template>
-    <ul class="submenu" :class="{'zoom-in':drop==='more'}" :style="{top:toolbar.y+'px',left:toolbar.x+'px'}" v-drag>
+    <ul class="submenu" :class="{'zoom-in':toolbar.drop==='more'}" :style="{top:toolbar.y+'px',left:toolbar.x+'px'}" v-drag>
         <li data-drag class="drag-bar"></li>
         <li class="submenu-item">
-            <button class="submenu-btn" name="capture" v-on:click="submenuFn" :class="{'active-1': drop === 'capture'}">
+            <button class="submenu-btn" name="capture" v-on:click="submenuFn" :class="{'active-1': toolbar.drop === 'capture'}">
                 <i class="icon icon-camera"></i> 屏幕录制
             </button>
         </li>
@@ -12,7 +12,7 @@
             </button>
         </li>
         <li class="submenu-item">
-            <button class="submenu-btn" name="sprite" v-on:click="submenuFn" :class="{'active-1': drop === 'sprite'}">
+            <button class="submenu-btn" name="sprite" v-on:click="submenuFn" :class="{'active-1': toolbar.drop === 'sprite'}">
                 <i class="icon icon-table2"></i> 图片拼接
             </button>
         </li>
@@ -41,8 +41,8 @@
 
 <script>
     export default {
-        name: "SubMenu",
-        props: ['drop'],
+        name: "sub-menu",
+        props: ['toolbar'],
         methods: {
             submenuFn(){
 

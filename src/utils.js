@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import Vue from 'vue';
 
 const formats = {
@@ -39,12 +38,6 @@ export default {
                 dialog.body = '<p>文件输出位置：'+url+'</p>';
             }
         });
-    },
-    path(p){
-        if(typeof p === 'boolean'){
-            return path;
-        }
-        return path.normalize(p);
     },
     type(format){
         let types = ['audio','image','video'],
@@ -117,6 +110,7 @@ export default {
     css(node, name){
         return parseFloat(window.getComputedStyle(node)[name]);
     },
+    /*
     dialog: new Vue({
         el: '#dialog',
         data: {
@@ -140,7 +134,7 @@ export default {
                 }
             }
         }
-    }),
+    }),*/
     menu: new Vue({
         el: '#contextmenu',
         data: {

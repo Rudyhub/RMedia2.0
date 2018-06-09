@@ -8014,6 +8014,22 @@ $exports.store = store;
 
 /***/ }),
 
+/***/ "W4oG":
+/*!*****************************************************************!*\
+  !*** ./node_modules/_core-js@2.5.7@core-js/modules/_defined.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+
+/***/ }),
+
 /***/ "WJai":
 /*!*******************************************************************!*\
   !*** ./node_modules/_core-js@2.5.7@core-js/modules/_to-length.js ***!
@@ -8422,6 +8438,46 @@ exports.f = __webpack_require__(/*! ./_descriptors */ "9xH4") ? Object.definePro
 
 /***/ }),
 
+/***/ "mt1i":
+/*!********************************************************************!*\
+  !*** ./node_modules/_core-js@2.5.7@core-js/modules/_fix-re-wks.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var hide = __webpack_require__(/*! ./_hide */ "cig6");
+var redefine = __webpack_require__(/*! ./_redefine */ "fiJS");
+var fails = __webpack_require__(/*! ./_fails */ "zOMd");
+var defined = __webpack_require__(/*! ./_defined */ "W4oG");
+var wks = __webpack_require__(/*! ./_wks */ "V2G7");
+
+module.exports = function (KEY, length, exec) {
+  var SYMBOL = wks(KEY);
+  var fns = exec(defined, SYMBOL, ''[KEY]);
+  var strfn = fns[0];
+  var rxfn = fns[1];
+  if (fails(function () {
+    var O = {};
+    O[SYMBOL] = function () { return 7; };
+    return ''[KEY](O) != 7;
+  })) {
+    redefine(String.prototype, KEY, strfn);
+    hide(RegExp.prototype, SYMBOL, length == 2
+      // 21.2.5.8 RegExp.prototype[@@replace](string, replaceValue)
+      // 21.2.5.11 RegExp.prototype[@@split](string, limit)
+      ? function (string, arg) { return rxfn.call(string, this, arg); }
+      // 21.2.5.6 RegExp.prototype[@@match](string)
+      // 21.2.5.9 RegExp.prototype[@@search](string)
+      : function (string) { return rxfn.call(string, this); }
+    );
+  }
+};
+
+
+/***/ }),
+
 /***/ "n0pS":
 /*!*******************************************************************!*\
   !*** ./node_modules/_core-js@2.5.7@core-js/modules/_an-object.js ***!
@@ -8763,6 +8819,29 @@ module.exports = {};
 
 /***/ }),
 
+/***/ "q6NJ":
+/*!***************************************************************************!*\
+  !*** ./node_modules/_core-js@2.5.7@core-js/modules/es6.regexp.replace.js ***!
+  \***************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@replace logic
+__webpack_require__(/*! ./_fix-re-wks */ "mt1i")('replace', 2, function (defined, REPLACE, $replace) {
+  // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
+  return [function replace(searchValue, replaceValue) {
+    'use strict';
+    var O = defined(this);
+    var fn = searchValue == undefined ? undefined : searchValue[REPLACE];
+    return fn !== undefined
+      ? fn.call(searchValue, O, replaceValue)
+      : $replace.call(String(O), searchValue, replaceValue);
+  }, $replace];
+});
+
+
+/***/ }),
+
 /***/ "r1VK":
 /*!*************************************************************!*\
   !*** ./node_modules/_core-js@2.5.7@core-js/modules/_cof.js ***!
@@ -9076,4 +9155,4 @@ module.exports = function (exec) {
 /***/ })
 
 }]);
-//# sourceMappingURL=chunk-vendors.b4c18cc6.js.map
+//# sourceMappingURL=chunk-vendors.860561d6.js.map

@@ -49,7 +49,13 @@ const store = {
         itemCss: '',
         imgCss: ''
     },
-    framestep: 2
+    framestep: 2,
+    dialog: {
+        show: false,
+        title: '',
+        body: '',
+        btns: []
+    }
 };
 
 export default store;

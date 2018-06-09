@@ -15,36 +15,49 @@
         <button class="toolbar-item" v-on:click="convertFn" :class="{'active-1': store.isStarted}">
             <i class="icon icon-stack"></i> {{store.isStarted ? '停止':'开始'}}
         </button>
-        <input class="toolbar-item" type="range" min=".19" max=".98" step="0.01" v-on:input="zoomItemFn">
+        <!--<input class="toolbar-item" type="range" min=".19" max=".98" step="0.01" v-on:input="zoomItemFn">-->
     </div>
 </template>
 
 <script>
-    // import vars from '../vars.js';
+    import vars from '../vars.js';
 
-    // const nw = vars.nw;
-    // const win = vars.win;
+    const nw = vars.nw;
+    const win = vars.win;
 
     export default {
-        name: "MenuBar",
+        name: "menu-bar",
         props: ['store'],
+        mounted(){
+            let store = this.store;
+            function cancelFn(){
+                store.toolbar.drop = '';
+            }
+            vars.outputEl.addEventListener('cancel', cancelFn);
+            vars.inputEl.addEventListener('cancel', cancelFn);
+        },
         methods: {
             menuFn(e) {
-                this.store.toolbar.drop = e.currentTarget.name;
-                /*
+                let store = this.store;
+
                 let target = e.currentTarget,
                     name = target.name;
 
-                if(this.drop === name){
-                    this.drop = '';
+                if(store.toolbar.drop === name){
+                    store.toolbar.drop = '';
                 }else{
-                    this.drop = name;
-                    this.x = e.x;
-                    this.y = e.y+30;
+                    store.toolbar.drop = name;
+                    store.toolbar.x = e.x;
+                    store.toolbar.y = e.y+30;
                 }
                 switch(name){
-                    case 'chosefile': g.inputEl.value = ''; g.inputEl.click(); break;
-                    case 'chosedir': g.outputEl.click(); break;
+                    case 'chosefile':
+                        vars.inputEl.value = '';
+                        vars.inputEl.click();
+                        break;
+                    case 'chosedir':
+                        vars.outputEl.click();
+                        break;
                     case 'pdf2pic':
                         nw.Window.open('plugins/pdf2pic/pdf2pic.html',{
                             id: 'pdf2pic',
@@ -55,7 +68,7 @@
                             width: Math.round(win.width*.8),
                             height: Math.round(win.height*.8)
                         });
-                        break;
+                        break;/*
                     case 'concat':
                     {
                         let tmpType,
@@ -151,8 +164,8 @@
                         break;
                     case 'helpBook':
                         //nw.Shell.openExternal(config.usercfg.documentation);
-                        break;
-                }*/
+                        break;*/
+                }
             },
             convertFn() {
 

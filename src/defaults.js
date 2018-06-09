@@ -1,19 +1,20 @@
-import vars from './vars';
 import cp from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import vars from './vars';
 
 const nw = vars.nw;
 
 let appRoot = path.dirname(nw.process.execPath),
 	ffmpegPath = path.join(appRoot,'ffmpeg', 'ffmpeg.exe'),
 	checkPath = cp.spawnSync(ffmpegPath,['-version']);
+
 if(checkPath.error){
 	appRoot = nw.process.cwd();
 	ffmpegPath = path.join(appRoot,'ffmpeg','ffmpeg.exe');
 	checkPath = cp.spawnSync(ffmpegPath, ['-version']);
 	if(checkPath.error){
-		alert('ffmpeg文件丢失，请确保安装目录下的文件夹ffmpeg/有ffmpeg.exe文件。');
+		alert('核心文件丢失，请确保安装目录下的文件夹“ffmpeg/”内有ffmpeg.exe。');
 	}
 }
 
