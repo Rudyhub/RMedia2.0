@@ -10,8 +10,6 @@
   "chromium-args": "--enable-webgl --ignore-gpu-blacklist",
   "window": {
     "show": true,
-    "width": 1280,
-    "height": 720,
     "title": "媒体处理器",
     "icon": "favicon.ico",
     "toolbar": false,
