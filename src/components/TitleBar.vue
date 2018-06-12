@@ -1,5 +1,5 @@
 <template>
-    <div class="title-bar gradient-bar-top drag">
+    <div class="title-bar drag">
         <img class="logo" :src="'./favicon.ico'" alt="">
         <span class="title">{{title}}</span>
         <div class="title-btn-group no-drag">
@@ -48,14 +48,15 @@
 </script>
 <style>
     .title-bar{
-        border-bottom: 1px solid var(--gray5);
+        background: var(--titleBar2) -webkit-linear-gradient( top, var(--titleBar1), var(--titleBar2) 90%);
+        border-bottom: 1px solid var(--titleBarBorder1);
         height: 35px;
         line-height: 35px;
         position: relative;
     }
     .title{
         font-size: 16px;
-        color: var(--gray8);
+        color: var(--titleText);
         vertical-align: middle;
         height: 96%;
     }
@@ -78,34 +79,34 @@
         font-size: 20px;
         text-align: center;
         line-height: 16px;
-        color: #fff;
+        color: var(--winBtnText);
         margin: 0 5px;
         cursor: pointer;
-        border: 1px solid #aaa;
+        border: 1px solid var(--color5);
     }
     .win-minimize{
-        background: #e4ab2c;
+        background: var(--winBtn1);
     }
     .win-toggle{
-        background: #28a745;
+        background: var(--winBtn2);
     }
     .win-toggle i{
         display: block;
         width: 8px;
         height: 8px;
-        border: 1px solid #fff;
+        border: 1px solid var(--winBtnText);
         margin: 5px;
     }
     .win-close{
-        background: #e34c26;
+        background: var(--winBtn3);
     }
     .win-minimize:hover{
-        background: #d0971c;
+        background: var(--winBtnHover1);
     }
     .win-toggle:hover{
-        background: #1d9439;
+        background: var(--winBtnHover2);
     }
     .win-close:hover{
-        background: #cf4b1c;
+        background: var(--winBtnHover3);
     }
 </style>

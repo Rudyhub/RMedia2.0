@@ -1,14 +1,26 @@
 :root{
-    --gray1: #fff;
-    --gray2: #eee;
-    --gray3: #ddd;
-    --gray4: #ccc;
-    --gray5: #aaa;
-    --gray6: #888;
-    --gray7: #555;
-    --gray8: #333;
-    --gray9: #111;
-    --gray10: #000;
+    --bodyBg: #ccc;
+
+    --titleBar1: #fff;
+    --titleBar2: #ccc;
+    --titleBarBorder1: #aaa;
+    --titleText: #333;
+
+    --winBtn1: #e4ab2c;
+    --winBtn2: #28a745;
+    --winBtn3: #e34c26;
+    --winBtnHover1: #d0971c;
+    --winBtnHover2: #1d9439;
+    --winBtnHover3: #cf4b1c;
+    --winBtnText: #fff;
+
+    --menubarBg: #efefef;
+    --menubarBorderBottom: #bbb;
+    --menuItemHover1: #ccc;
+    --menuItemText1: #333;
+    --menuItem1: #ddd;
+    --menuItem2: #bbb;
+
 }
 html,body{
     height: 100%;
@@ -16,7 +28,7 @@ html,body{
 body{
     margin: 0;
     overflow: hidden;
-    background: var(--gray4);
+    background: var(--bodyBg);
 }
 button{
     outline: none;
@@ -27,6 +39,50 @@ button{
 .no-drag{
     -webkit-app-region: no-drag;
 }
-.gradient-bar-top{
-    background: #c7c7c7 -webkit-linear-gradient( top, #fff, #c7c7c7 90%);
+.submenu{
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: none;
+    background: #fff;
+    z-index: 100;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.submenu-item{
+    position: relative;
+    padding: 6px 12px;
+    border-bottom: 1px solid #ccc;
+}
+.submenu-item:last-child{
+    border-bottom: none;
+}
+.submenu-item:hover{
+    background: #ececec;
+}
+.submenu-item:hover>.submenu{
+    display: block;
+    transform-origin: left;
+    animation: slideToRight .5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slideToRight {
+    from{
+        transform: scaleX(0);
+    }
+    to{
+        transform: scaleX(1);
+    }
+}
+@keyframes slideToBottom {
+    from{
+        transform: scaleY(0);
+    }
+    to{
+        transform: scaleY(1);
+    }
 }
