@@ -1,0 +1,23 @@
+:root{
+    --gray1: #fff;
+    --gray2: #eee;
+    --gray3: #ddd;
+    --gray4: #ccc;
+    --gray5: #aaa;
+    --gray6: #888;
+    --gray7: #555;
+    --gray8: #333;
+    --gray9: #111;
+    --gray10: #000;
+}
+html,body{
+    height: 100%;
+}
+body{
+    margin: 0;
+    overflow: hidden;
+    background: var(--gray3);
+}
+.gradient-bar-top{
+    background: -webkit-linear-gradient( top, #fff, #ddd);
+}

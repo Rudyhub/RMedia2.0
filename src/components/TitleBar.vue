@@ -1,5 +1,5 @@
 <template>
-    <div class="titlebar">
+    <div class="titlebar gradient-bar-top">
         <h1 class="title draggable">{{title}}</h1>
         <div class="titlebar-tool">
             <button v-on:click="minimize">&minus;</button>
@@ -10,15 +10,15 @@
 </template>
 
 <script>
-    import vars from '../vars';
-    import defaults from '../defaults';
+    import vars from '../vars.js';
+    import user from '../user.js';
 
     const win = vars.win;
     export default {
         name: "title-bar",
         data(){
             return {
-                title: defaults.usercfg.title || ''
+                title: user.title || ''
             }
         },
         methods: {
@@ -45,3 +45,15 @@
         }
     }
 </script>
+<style>
+    .titlebar{
+        border-bottom: 1px solid var(--gray4);
+    }
+    .title{
+        font-size: 20px;
+        color: var(--gray7);
+    }
+    .titlebar-tool{
+        float: right;
+    }
+</style>

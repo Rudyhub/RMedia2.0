@@ -1,27 +1,16 @@
 <template>
   <div id="app">
-    {{msg}}
-    <!--<header-bar :store="store"/>-->
-    <!--<dialog-bar :dialog="store.dialog"/>-->
+    <header-bar/>
   </div>
 </template>
 
 <script>
-// import HeaderBar from './components/HeaderBar';
-// import store from './store.js';
-// import DialogBar from './components/DialogBar';
+import HeaderBar from './components/HeaderBar.vue';
 
 export default {
     name: 'app',
-    data(){
-        return {
-            msg: 'abck'
-            // store
-        }
-    },
-    // components: {
-    //     HeaderBar,
-    //     DialogBar
-    // }
+    components: {
+        HeaderBar
+    }
 }
 </script>
