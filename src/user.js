@@ -1,9 +1,7 @@
+/* global nw */
 import cp from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import vars from './vars';
-
-const nw = vars.nw;
 
 let appRoot = path.dirname(nw.process.execPath),
 	ffmpegPath = path.join(appRoot,'ffmpeg', 'ffmpeg.exe'),

@@ -1,4 +1,4 @@
-import vars from './vars.js';
+import vars from './els.js';
 import defaults from './defaults.js';
 
 const store = {

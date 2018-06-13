@@ -5,10 +5,14 @@ inputEl.type = outputEl.type = 'file';
 inputEl.multiple = true;
 outputEl.nwdirectory = true;
 
-/* global nw */
 export default {
-    nw,
-    win: nw.Window.get(),
     inputEl,
-    outputEl
+    outputEl,
+    open(){
+        inputEl.value = '';
+        inputEl.click();
+    },
+    inChange(fn){
+        inputEl.addEventListener('change', fn);
+    }
 }

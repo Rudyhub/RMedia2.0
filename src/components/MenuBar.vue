@@ -1,18 +1,18 @@
 <template>
     <div class="menu-bar">
-        <div class="menu-item" v-on:click="showSubmenu">
+        <div class="menu-item" v-on:click="showSubmenu" data-name="files">
             文件(Alt+F)
             <sub-menu :items="fileSubmenu"/>
         </div>
-        <div class="menu-item" v-on:click="showSubmenu">
+        <div class="menu-item" v-on:click="showSubmenu" data-name="setter">
             设置(Alt+S)
             <sub-menu :items="setterSubmenu"/>
         </div>
-        <div class="menu-item" v-on:click="showSubmenu">
+        <div class="menu-item" v-on:click="showSubmenu" data-name="fun">
             功能(Alt+U)
             <sub-menu :items="funSubmenu"/>
         </div>
-        <div class="menu-item" v-on:click="showSubmenu">
+        <div class="menu-item" v-on:click="showSubmenu" data-name="about">
             关于(Alt+A)
             <sub-menu :items="aboutSubmenu"/>
         </div>
@@ -21,29 +21,30 @@
 
 <script>
     import SubMenu from './SubMenu.vue';
+    import els from '../els.js';
 
     export default {
         name: "menu-bar",
         data(){
             return {
                 fileSubmenu: [
-                    {name: '打开文件(Ctrl+O)'},
-                    {name: '输出到(Ctrl+S)'},
-                    {name: '清空文件(Ctrl+Delete)'},
-                    {name: '退出程序(Ctrl+Q)'}
+                    {id: 'open', name: '打开文件(Ctrl+O)'},
+                    {id: 'save', name: '输出到(Ctrl+S)'},
+                    {id: 'clear', name: '清空文件(Ctrl+Delete)'},
+                    {id: 'exit', name: '退出程序(Ctrl+Q)'}
                 ],
                 setterSubmenu: [],
                 funSubmenu: [
-                    {name: '屏幕录制'},
-                    {name: 'PDF转图片'},
-                    {name: '图片拼接'},
-                    {name: '音/视频拼接'},
-                    {name: '音/视频混合'}
+                    {id: 'capture', name: '屏幕录制'},
+                    {id: 'pdf2img', name: 'PDF转图片'},
+                    {id: 'imgJoin', name: '图片拼接'},
+                    {id: 'mediaJoin', name: '音/视频拼接'},
+                    {id: 'mediaMix', name: '音/视频混合'}
                 ],
                 aboutSubmenu: [
-                    {name: '急救卡机'},
-                    {name: '帮助文档'},
-                    {name: '版本更新'}
+                    {id: 'aid', name: '急救卡机'},
+                    {id: 'help', name: '帮助文档'},
+                    {id: 'version', name: '版本更新'}
                 ]
             }
         },
@@ -63,7 +64,7 @@
                 }
             });
             document.addEventListener('keyup', (e)=>{
-                console.log(e.keyCode);
+                // console.log(e.keyCode);
                 if(e.altKey){
                     switch (e.keyCode){
                         case 70:
@@ -84,6 +85,20 @@
                             break;
                     }
                 }
+                if(e.ctrlKey){
+                    switch (e.keyCode){
+                        case 79://ctrl+o
+                            els.open();
+                            break;
+                        case 83://ctrl+s
+                            els.outputEl.click();
+                            break;
+                        case 46://ctrl+delete
+                            break;
+                        case 81://ctrl+q
+                            break;
+                    }
+                }
             });
         },
         components: {
@@ -99,6 +114,14 @@
                         items[i].classList.remove('active');
                 }
                 e.currentTarget.classList.toggle('active');
+                switch (e.target.dataset.name){
+                    case 'open':
+                        els.open();
+                        break;
+                    case 'save':
+                        els.outputEl.click();
+                        break;
+                }
             }
         }
     }
