@@ -1,15 +1,21 @@
 <template>
     <div class="menu-bar">
         <div class="menu-item" v-on:click="showSubmenu">
-            文件
+            文件(Alt+F)
             <sub-menu :items="fileSubmenu"/>
         </div>
         <div class="menu-item" v-on:click="showSubmenu">
-            设置
+            设置(Alt+S)
             <sub-menu :items="setterSubmenu"/>
         </div>
-        <div class="menu-item">功能</div>
-        <div class="menu-item">关于</div>
+        <div class="menu-item" v-on:click="showSubmenu">
+            功能(Alt+U)
+            <sub-menu :items="funSubmenu"/>
+        </div>
+        <div class="menu-item" v-on:click="showSubmenu">
+            关于(Alt+A)
+            <sub-menu :items="aboutSubmenu"/>
+        </div>
     </div>
 </template>
 
@@ -21,22 +27,77 @@
         data(){
             return {
                 fileSubmenu: [
-                    {name: 'Item 1'},
-                    {name: 'Item 2'},
-                    {name: 'Item 3',items: [{name: 'subitem 1'}, {name: 'subItem 2'}]}
+                    {name: '打开文件(Ctrl+O)'},
+                    {name: '输出到(Ctrl+S)'},
+                    {name: '清空文件(Ctrl+Delete)'},
+                    {name: '退出程序(Ctrl+Q)'}
                 ],
-                setterSubmenu: [
-                    {name: 'Item 1'},
-                    {name: 'Item 2'},
-                    {name: 'Item 3',items: [{name: 'subitem 1'}, {name: 'subItem 2'}]}
+                setterSubmenu: [],
+                funSubmenu: [
+                    {name: '屏幕录制'},
+                    {name: 'PDF转图片'},
+                    {name: '图片拼接'},
+                    {name: '音/视频拼接'},
+                    {name: '音/视频混合'}
+                ],
+                aboutSubmenu: [
+                    {name: '急救卡机'},
+                    {name: '帮助文档'},
+                    {name: '版本更新'}
                 ]
             }
+        },
+        mounted(){
+            let el = this.$el,
+                items = el.querySelectorAll('.menu-item'),
+                len = items.length;
+            function clearActive(skip){
+                for(let i=0; i<len; i++){
+                    if(items[i] === skip) continue;
+                    items[i].classList.remove('active');
+                }
+            }
+            document.addEventListener('click', (e)=>{
+                if(!el.contains(e.target)){
+                    clearActive();
+                }
+            });
+            document.addEventListener('keyup', (e)=>{
+                console.log(e.keyCode);
+                if(e.altKey){
+                    switch (e.keyCode){
+                        case 70:
+                            clearActive(items[0]);
+                            items[0].classList.toggle('active');
+                            break;
+                        case 83:
+                            clearActive(items[1]);
+                            items[1].classList.toggle('active');
+                            break;
+                        case 85:
+                            clearActive(items[2]);
+                            items[2].classList.toggle('active');
+                            break;
+                        case 65:
+                            clearActive(items[3]);
+                            items[3].classList.toggle('active');
+                            break;
+                    }
+                }
+            });
         },
         components: {
             SubMenu
         },
         methods: {
             showSubmenu(e){
+                let el = this.$el,
+                    items = el.querySelectorAll('.menu-item'),
+                    len = items.length;
+                for(let i=0; i<len; i++){
+                    if(items[i] !== e.currentTarget)
+                        items[i].classList.remove('active');
+                }
                 e.currentTarget.classList.toggle('active');
             }
         }
