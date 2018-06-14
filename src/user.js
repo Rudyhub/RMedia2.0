@@ -25,8 +25,8 @@ if(readFile){
 }
 
 user.appRoot = appRoot;
-user.ffmpegPath = ffmpegPath;
-user.audioThumb = path.join(appRoot, 'icons','audio.jpg');
-user.outPath = path.join(nw.process.env.USERPROFILE,'desktop');
+user.ffmpegPath = user.ffmpegPath || ffmpegPath;
+user.audioThumb = user.audioThumb || path.join(appRoot, 'icons','audio.jpg');
+user.outPath = user.outPath || path.join(nw.process.env.USERPROFILE,'desktop');
 
 export default user;
