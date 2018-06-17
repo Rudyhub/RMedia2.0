@@ -64,38 +64,37 @@
                 }
             });
             document.addEventListener('keyup', (e)=>{
-                // console.log(e.keyCode);
                 if(e.altKey){
-                    switch (e.keyCode){
-                        case 70:
+                    switch (e.key.toLowerCase()){
+                        case 'f':
                             clearActive(items[0]);
                             items[0].classList.toggle('active');
                             break;
-                        case 83:
+                        case 's':
                             clearActive(items[1]);
                             items[1].classList.toggle('active');
                             break;
-                        case 85:
+                        case 'u':
                             clearActive(items[2]);
                             items[2].classList.toggle('active');
                             break;
-                        case 65:
+                        case 'a':
                             clearActive(items[3]);
                             items[3].classList.toggle('active');
                             break;
                     }
                 }
                 if(e.ctrlKey){
-                    switch (e.keyCode){
-                        case 79://ctrl+o
+                    switch (e.key.toLowerCase()){
+                        case 'o':
                             els.open();
                             break;
-                        case 83://ctrl+s
+                        case 's':
                             els.outputEl.click();
                             break;
-                        case 46://ctrl+delete
+                        case 'delete':
                             break;
-                        case 81://ctrl+q
+                        case 'q':
                             break;
                     }
                 }

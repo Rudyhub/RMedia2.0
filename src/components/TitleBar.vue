@@ -28,10 +28,10 @@
             },
             toggle(e){
                 let classList = e.currentTarget.classList,
-                    w = screen.width * .8,
+                    w = Math.round(screen.width * .8),
                     h = Math.round(w * .5625),
-                    x = (screen.width - w) / 2,
-                    y = (screen.height - h) / 2;
+                    x = Math.round((screen.width - w) / 2),
+                    y = Math.round((screen.height - h) / 2);
                 classList.toggle('full');
                 if(classList.contains('full')){
                     win.maximize();

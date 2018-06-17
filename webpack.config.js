@@ -26,5 +26,12 @@ module.exports = {
     target: 'node-webkit',
     plugins: [
         new VueLoaderPlugin()
-    ]
+    ],
+    stats: {
+        colors: true,
+        modules: false,
+        children: false,
+        chunks: false,
+        chunkModules: false
+    }
 };
