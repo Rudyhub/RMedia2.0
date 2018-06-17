@@ -34,6 +34,7 @@
 }
 html{
     -webkit-text-size-adjust:none;
+    user-select: none;
 }
 html,body{
     height: 100%;

@@ -56,11 +56,6 @@
                 },16);
             }
 
-            els.vue.$on('inputFile', f=>{
-                console.log(f);
-                _this.$set(_this.items, 4, 'msagd');
-            });
-
             _this.$el.addEventListener('wheel', function (e) {
                 let dir = e.deltaY>0 ? 1 : -1;
                 _this.$el.scrollTop += dir * dis;
@@ -78,6 +73,13 @@
                 _this.$el.classList.remove('main-scrollable');
                 _this.$el.removeEventListener('mousedown', downHanler);
                 _this.$el.removeEventListener('mousemove', moveHandler);
+            });
+
+
+            //定义inputFile事件
+            els.vue.$on('inputFile', f=>{
+                console.log(f);
+                _this.$set(_this.items, 4, 'msagd');
             });
         },
         data(){

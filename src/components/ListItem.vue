@@ -13,7 +13,7 @@
 
 <style>
     .item{
-        width: 25%;
+        width: 33.3vw;
         height: 30vw;
         background: transparent;
         box-sizing: border-box;
