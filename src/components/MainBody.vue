@@ -6,8 +6,29 @@
 
 <script>
     import ListItem from './ListItem.vue';
+    import user from '../user.js';
     import els from '../els.js';
+    import Media from '../Media.js';
 
+    function resetItem(item){
+        let tobitv = item.bitv <= user.bitv ? item.bitv : user.bitv,
+            tobita = item.bita <= user.bita ? item.bita : user.bita,
+            quality = (tobitv+tobita)/(item.bitv+item.bita)*100;
+
+        item.quality = quality ? quality.toFixed(2) : 100;
+        item.toname = user.names+item.name.slice(0, -item.format.length-1);
+        item.toformat = item.type !== 'image' || !Media.image.includes(item.format) ?  user[item.type] : item.format;
+        item.startTime = 0;
+        item.endTime = item.duration;
+        item.cover = false;
+        item.coverTime = 0;
+        item.towidth = item.width > user.width ? user.width : item.width;
+        item.toheight = Math.round(item.towidth * item.scale);
+        item.tofps = item.fps;
+        item.totype = Media.getType(item.toformat);
+        item.logoStart = 0;
+        item.logoEnd = item.duration;
+    }
     export default {
         name: "main-body",
         components: {ListItem},
@@ -77,28 +98,97 @@
 
 
             //定义inputFile事件
-            els.vue.$on('inputFile', f=>{
-                console.log(f);
-                _this.$set(_this.items, 4, 'msagd');
+            els.vue.$on('inputFile', files=>{
+                let file = files[0];
+                let item = {
+                    path: file.path,
+                    thumb: '',
+                    canplay: false,
+                    playing: 0,
+                    progress: 0,
+                    lock: true,
+                    alpha: false,
+                    type: '',
+                    series: false,
+                    logo: '',
+                    logoX: 1,
+                    logoY: 2,
+                    logoScale: 0,
+                    logoSize: 12,
+                    logoStart: 0,
+                    logoEnd: 0,
+
+                    duration: 0,
+                    startTime: 0,
+                    endTime: 0,
+                    currentTime: 0,
+                    coverTime: 0,
+                    cover: false,
+                    coverWidth: 480,
+
+                    name: file.name,
+                    toname: '',
+
+                    bitv: 0,
+                    bita: 0,
+
+                    size: (parseInt(file.size) || 0),
+                    quality: 0,
+
+                    scale: 0,
+                    width: 0,
+                    towidth: 0,
+                    height: 0,
+                    toheight: 0,
+
+                    format: '',
+                    toformat: '',
+
+                    fps: 0,
+                    tofps: 0,
+
+                    split: false,
+                    achannel: '',
+                    aclayout: 0,
+                    vchannel: ''
+                };
+
+                _this.$set(_this.items, 'uniqid', item);
+
+                Media.info({
+                    input: file.path,
+                    success: (json)=>{
+                        item.thumb = json.thumb;
+                        item.type = json.type;
+
+                        item.duration = json.duration;
+
+                        item.bitv = json.bitv || json.bit;
+                        item.bita = json.bita;
+
+                        item.scale = (json.height / json.width) || vue.viewScale;
+                        item.width = json.width;
+                        item.height = json.height;
+
+                        item.format = json.ext;
+                        item.canplay = (/(mp4|mp3|ogg|mpeg|mkv|wav|webm)/i.test(json.ext));
+                        item.fps = json.fps;
+
+                        item.achannel = json.achannel;
+                        item.aclayout = json.aclayout;
+                        item.vchannel = json.vchannel;
+
+                        resetItem(item);
+                    },
+                    fail: (err)=>{
+                        console.log(err)
+                    }
+                });
             });
         },
         data(){
             return {
-                items: {
-                    0: 'msg0',
-                    1: 'msg1',
-                    2: 'msg2',
-                    3: 'msg3',
-                    4: 'msg4',
-                    5: 'msg1',
-                    6: 'msg2',
-                    7: 'msg3',
-                    8: 'msg4',
-                    9: 'msg1',
-                    10: 'msg2',
-                    11: 'msg3',
-                    12: 'msg4'
-                }
+                items: {}
             }
         },
         comments: {

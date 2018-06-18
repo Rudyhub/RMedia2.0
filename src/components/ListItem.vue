@@ -1,6 +1,11 @@
 <template>
     <div class="item">
-        <div class="item-inner">{{item}}</div>
+        <div class="item-inner">
+            <img :src="item.thumb" alt="">
+            <div v-for="(v, k) in item" v-bind:key="k">
+                {{k+': '+v}}
+            </div>
+        </div>
     </div>
 </template>
 
@@ -14,7 +19,6 @@
 <style>
     .item{
         width: 33.3vw;
-        height: 30vw;
         background: transparent;
         box-sizing: border-box;
         padding: 5px;
@@ -24,7 +28,9 @@
         width: 100%;
         height: 100%;
         background: #fff;
-        font-size: .2vw;
+        font-size: 1vw;
         border-radius: 4px;
+        padding: 2px;
+        box-sizing: border-box;
     }
 </style>

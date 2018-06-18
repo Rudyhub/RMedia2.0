@@ -6,7 +6,13 @@
   "bitv": 2048,
   "bita": 128,
   "fps": 25,
+  "names": "",
   "image": "jpg",
   "video": "mp4",
-  "audio": "mp3"
+  "audio": "mp3",
+  "format": {
+    "image": ["jpg","jpeg","png","gif","webp","ico","bmp"],
+    "video": ["mp4","ogg","webm"],
+    "audio": ["mp3","wav"]
+  }
 }
