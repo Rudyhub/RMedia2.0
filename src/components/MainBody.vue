@@ -29,6 +29,7 @@
         item.logoStart = 0;
         item.logoEnd = item.duration;
     }
+
     export default {
         name: "main-body",
         components: {ListItem},
@@ -41,7 +42,9 @@
                 constant = 4,
                 dis = 40,
                 arr = [0,0],
-                index = 0;
+                index = 0,
+                regCanplay = /mp4|mp3|ogg|mpeg|mkv|wav|webm/i,
+                uniqid = 0;
 
             function downHanler(e) {
                 scrollTop = _this.$el.scrollTop;
@@ -99,92 +102,108 @@
 
             //定义inputFile事件
             els.vue.$on('inputFile', files=>{
-                let file = files[0];
-                let item = {
-                    path: file.path,
-                    thumb: '',
-                    canplay: false,
-                    playing: 0,
-                    progress: 0,
-                    lock: true,
-                    alpha: false,
-                    type: '',
-                    series: false,
-                    logo: '',
-                    logoX: 1,
-                    logoY: 2,
-                    logoScale: 0,
-                    logoSize: 12,
-                    logoStart: 0,
-                    logoEnd: 0,
+                let file = files[0], i = 0;
+                function setItem() {
+                    let item = {
+                        path: file.path,
+                        thumb: '',
+                        canplay: false,
+                        playing: 0,
+                        progress: 0,
+                        lock: true,
+                        alpha: false,
+                        type: '',
+                        series: false,
+                        logo: '',
+                        logoX: 1,
+                        logoY: 2,
+                        logoScale: 0,
+                        logoSize: 12,
+                        logoStart: 0,
+                        logoEnd: 0,
 
-                    duration: 0,
-                    startTime: 0,
-                    endTime: 0,
-                    currentTime: 0,
-                    coverTime: 0,
-                    cover: false,
-                    coverWidth: 480,
+                        duration: 0,
+                        startTime: 0,
+                        endTime: 0,
+                        currentTime: 0,
+                        coverTime: 0,
+                        cover: false,
+                        coverWidth: 480,
 
-                    name: file.name,
-                    toname: '',
+                        name: file.name,
+                        toname: '',
 
-                    bitv: 0,
-                    bita: 0,
+                        bitv: 0,
+                        bita: 0,
 
-                    size: (parseInt(file.size) || 0),
-                    quality: 0,
+                        size: (parseInt(file.size) || 0),
+                        quality: 0,
 
-                    scale: 0,
-                    width: 0,
-                    towidth: 0,
-                    height: 0,
-                    toheight: 0,
+                        scale: 0,
+                        width: 0,
+                        towidth: 0,
+                        height: 0,
+                        toheight: 0,
 
-                    format: '',
-                    toformat: '',
+                        format: '',
+                        toformat: '',
 
-                    fps: 0,
-                    tofps: 0,
+                        fps: 0,
+                        tofps: 0,
 
-                    split: false,
-                    achannel: '',
-                    aclayout: 0,
-                    vchannel: ''
-                };
+                        split: false,
+                        achannel: '',
+                        aclayout: 0,
+                        vchannel: ''
+                    };
 
-                _this.$set(_this.items, 'uniqid', item);
+                    _this.$set(_this.items, uniqid, item);
 
-                Media.info({
-                    input: file.path,
-                    success: (json)=>{
-                        item.thumb = json.thumb;
-                        item.type = json.type;
+                    Media.info({
+                        input: file.path,
+                        success: (json) => {
+                            item.thumb = json.thumb;
+                            item.type = json.type;
 
-                        item.duration = json.duration;
+                            item.duration = json.duration;
 
-                        item.bitv = json.bitv || json.bit;
-                        item.bita = json.bita;
+                            item.bitv = json.bitv || json.bit;
+                            item.bita = json.bita;
 
-                        item.scale = (json.height / json.width) || vue.viewScale;
-                        item.width = json.width;
-                        item.height = json.height;
+                            item.scale = (json.height / json.width) || user.viewScale;
+                            item.width = json.width;
+                            item.height = json.height;
 
-                        item.format = json.ext;
-                        item.canplay = (/(mp4|mp3|ogg|mpeg|mkv|wav|webm)/i.test(json.ext));
-                        item.fps = json.fps;
+                            item.format = json.ext;
+                            item.canplay = regCanplay.test(json.ext);
+                            item.fps = json.fps;
 
-                        item.achannel = json.achannel;
-                        item.aclayout = json.aclayout;
-                        item.vchannel = json.vchannel;
+                            item.achannel = json.achannel;
+                            item.aclayout = json.aclayout;
+                            item.vchannel = json.vchannel;
 
-                        resetItem(item);
-                    },
-                    fail: (err)=>{
-                        console.log(err)
-                    }
-                });
+                            resetItem(item);
+                            uniqid++;
+
+                            i++;
+                            if((file = files[i])) setItem();
+                        },
+                        fail: (err) => {
+                            if(!window.confirm('可能不支持！是否保留以尝试转码？\n\n详情：'+err)){
+                                window.URL.revokeObjectURL(_this.items[uniqid].thumb);
+                                _this.$delete(_this.items, uniqid);
+                            }else{
+                                uniqid++;
+                            }
+                            i++;
+                            if((file = files[i])) setItem();
+                        }
+                    });
+                }
+
+                if(file) setItem();
             });
+
         },
         data(){
             return {
