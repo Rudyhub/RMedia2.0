@@ -1,6 +1,6 @@
 <template>
     <main class="main">
-        <list-item v-for="(item, key) in items" :key="key" :item="item"/>
+        <list-item v-for="(item, key) in items" :key="key" :uniqid="key" :item="item"/>
     </main>
 </template>
 
@@ -66,7 +66,6 @@
 
                 //缓冲
                 inertia(Math.abs(arr[0] - arr[1]) * constant, e.clientY - startY > 0 ? -1 : 1);
-
             }
             //实现缓冲
             function inertia(i, dir){
@@ -214,7 +213,13 @@
             ListItem
         },
         methods: {
-
+            toolsFn(e, uniqid, name){
+                if(name === 'delete'){
+                    this.$delete(this.items, uniqid);
+                }else{
+                    this.items[uniqid][name] = !this.items[uniqid][name];
+                }
+            }
         }
     }
 </script>
