@@ -216,8 +216,18 @@
             toolsFn(e, uniqid, name){
                 if(name === 'delete'){
                     this.$delete(this.items, uniqid);
+                    if(e.ctrlKey){
+                        for(let k in this.items){
+                            this.$delete(this.items, k);
+                        }
+                    }
                 }else{
                     this.items[uniqid][name] = !this.items[uniqid][name];
+                    if(e.ctrlKey){
+                        for(let k in this.items){
+                            this.items[k][name] = this.items[uniqid][name];
+                        }
+                    }
                 }
             }
         }

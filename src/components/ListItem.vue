@@ -27,13 +27,15 @@
                     <i class="item-tool v-mid icon icon-bin" v-on:click="$parent.toolsFn($event,uniqid,'delete')" title="删除"></i>
                 </div>
             </div>
-            <div class="item-tracks">
+            <div class="item-tracks-bar">
+                <div class="item-range-hand" :style="'left:'+item.currentTime/item.duration*100+'%'"></div>
                 <input v-if="item.duration" class="item-controls-range" type="range" title="时间" :value="item.currentTime" min="0" :max="item.duration" step="0.001"
                        :style="'background-image: linear-gradient(90deg, var(--rangeLoaded), var(--rangeLoaded) '+item.currentTime/item.duration*100+'%, transparent '+item.currentTime/item.duration*100+'%)'"
                        @input="rangeInput">
-                <div class="item-range-hand" :style="'left:'+item.currentTime/item.duration*100+'%'"></div>
-                <div>
-                    <br>
+                <div class="item-tracks" @contextmenu.prevent="tracksContextmenu">
+                    <div class="item-track" v-for="(track, trackId) of tracks" :key="trackId" :title="track.name" :dataId="track.id" :dataType="track.type">
+                        {{track.name}}
+                    </div>
                 </div>
             </div>
             <div v-for="(v, k) in item" v-bind:key="k">
@@ -44,8 +46,12 @@
 </template>
 
 <script>
+    /* globalss nw */
     import user from "../user";
     import Media from '../Media';
+    import utils from "../utils";
+
+    const trackMenu = utils.trackMenu();
 
     export default {
         name: "list-item",
@@ -54,10 +60,23 @@
             return {
                 viewWidth: (window.innerWidth * 33.3)/100 - 14,
                 viewScale: user.viewScale,
-                framestep: 2
+                framestep: 2,
+                tracks: []
             }
         },
         methods:{
+            thumb(time){
+                let _this = this;
+                window.URL.revokeObjectURL(_this.item.thumb);
+                Media.thumb({
+                    time: time,
+                    input: _this.item.path,
+                    format: 'jpg',
+                    success(src){
+                        _this.item.thumb = src;
+                    }
+                });
+            },
             play(){
                 let _this = this,
                     video = _this.$refs.v;
@@ -68,15 +87,7 @@
                     video.play();
                 }else{
                     video.pause();
-                    window.URL.revokeObjectURL(_this.item.thumb);
-                    Media.thumb({
-                        time: video.currentTime,
-                        input: _this.item.path,
-                        format: 'jpg',
-                        success(src){
-                            _this.item.thumb = src;
-                        }
-                    });
+                    _this.thumb(video.currentTime);
                 }
                 _this.item.playing = !video.paused;
             },
@@ -87,15 +98,7 @@
                 let _this = this,
                     currentTime = e.currentTarget.value;
                 if(_this.$refs.v.paused){
-                    window.URL.revokeObjectURL(_this.item.thumb);
-                    Media.thumb({
-                        time: currentTime,
-                        input: _this.item.path,
-                        format: 'jpg',
-                        success(src){
-                            _this.item.thumb = src;
-                        }
-                    });
+                    _this.thumb(currentTime);
                     _this.item.currentTime = parseFloat(currentTime);
                 }
             },
@@ -107,15 +110,7 @@
                 }else{
                     _this.item.currentTime = 0;
                 }
-                window.URL.revokeObjectURL(_this.item.thumb);
-                Media.thumb({
-                    time: _this.item.currentTime,
-                    input: _this.item.path,
-                    format: 'jpg',
-                    success(src){
-                        _this.item.thumb = src;
-                    }
-                });
+                _this.thumb(_this.item.currentTime);
             },
             nextFrames(){
                 let _this = this,
@@ -125,15 +120,22 @@
                 }else{
                     _this.item.currentTime = this.item.duration;
                 }
-                window.URL.revokeObjectURL(_this.item.thumb);
-                Media.thumb({
-                    time: _this.item.currentTime,
-                    input: _this.item.path,
-                    format: 'jpg',
-                    success(src){
-                        _this.item.thumb = src;
+                _this.thumb(_this.item.currentTime);
+            },
+            tracksContextmenu(e){
+                trackMenu.el.style.top = e.clientY + 'px';
+                trackMenu.el.style.left = e.clientX + 'px';
+                trackMenu.fn = (code)=>{
+                    if(code === 0){
+                        this.tracks.push({
+                            id: 'a',
+                            name: 'asgddash',
+                            type: 'video'
+                        });
                     }
-                });
+                    console.log(code);
+                };
+                document.body.appendChild(trackMenu.el);
             }
         },
         filters: {
@@ -231,10 +233,10 @@
         color: var(--controlIconActive);
         background-color: var(--controlIconActiveBg);
     }
-    .item-tracks{
+    .item-tracks-bar{
         position: relative;
-        min-height: 100px;
-        background-color: #eee;
+        height: 120px;
+        overflow: auto;
     }
     .item-controls-range{
         bottom: 0;
@@ -255,7 +257,7 @@
     .item-controls-range::-webkit-slider-thumb{
         width: 6px;
         height: 10px;
-        opacity: .3;
+        opacity: 0;
         background-color: var(--rangeLoaded);
         -webkit-appearance: none;
         display: block;
@@ -264,8 +266,42 @@
         position: absolute;
         left: 0;
         top: 0;
-        border-left: 1px solid #a00;
+        border-left: var(--rangeHand);
         width: 0;
         height: 100%;
+    }
+    .item-tracks{
+        background-color: #eee;
+        height: calc(100% - 10px);
+    }
+    .item-track{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        width: 100%;
+        height: 14px;
+        line-height: 14px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        background-color: #fff;
+    }
+    .track-menu{
+        font-size: 14px;
+        background-color: #fff;
+        box-shadow: #555 0 0 3px;
+        text-align: center;
+        position: fixed;
+        border-radius: 4px;
+        color: #333;
+        overflow: hidden;
+    }
+    .track-menu-item{
+        border-bottom: #ddd 1px solid;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+    .track-menu-item:hover{
+        background-color: #ddd;
     }
 </style>

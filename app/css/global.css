@@ -38,6 +38,7 @@
 
     --rangeLoaded: #42aa52;
     --rangeBg: #222;
+    --rangeHand: 1px solid #42aa52;
 }
 @font-face {
     font-family: 'SF Pro';
