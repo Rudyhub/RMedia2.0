@@ -30,10 +30,14 @@
 
     --itemInnerBg: #fff;
     --itemViewBg: #000;
-    --controlColor: #fff;
+    --controlColor: #aaa;
     --controlBg: #555;
     --controlIconHoverBg: #444;
     --controlIconActiveBg: #333;
+    --controlIconActive: #fff;
+
+    --rangeLoaded: #42aa52;
+    --rangeBg: #222;
 }
 @font-face {
     font-family: 'SF Pro';
@@ -71,6 +75,12 @@ button, input, select, textarea{
 }
 .float-r{
     float: right;
+}
+.v-mid{
+    vertical-align: middle;
+}
+.disabled{
+    pointer-events: none !important;
 }
 @keyframes slideToRight {
     from{
