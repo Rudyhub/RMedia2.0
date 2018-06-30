@@ -115,6 +115,27 @@ module.exports = {
             }
         });
     },
+    preview(uniqid, input, time){
+        if(!fs.existsSync('temp/'+uniqid)){
+            childprocess.execSync('md temp\\'+uniqid);
+        }
+        let path = 'temp/'+uniqid+'/'+time+'.jpg';
+        if(!fs.existsSync(path)){
+            try{
+                childprocess.execSync(user.ffmpegPath+' -ss '+time+' -i "'+input+'" -vframes 1 -y  -f image2 "'+path+'"');
+            }catch (e) {
+                console.log(e)
+            }
+        }
+        return path;
+    },
+    deltemp(uniqid){
+        try{
+            childprocess.execSync('rd /s /q temp\\'+uniqid);
+        }catch (e) {
+            console.log(e);
+        }
+    },
     thumb(o){
         let wmax = o.widthLimit || 480,
             w = o.width || wmax,

@@ -216,9 +216,11 @@
             toolsFn(e, uniqid, name){
                 if(name === 'delete'){
                     this.$delete(this.items, uniqid);
+                    Media.deltemp(uniqid);
                     if(e.ctrlKey){
                         for(let k in this.items){
                             this.$delete(this.items, k);
+                            Media.deltemp(k);
                         }
                     }
                 }else{

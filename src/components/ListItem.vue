@@ -68,6 +68,9 @@
             thumb(time){
                 let _this = this;
                 window.URL.revokeObjectURL(_this.item.thumb);
+                _this.item.thumb = Media.preview(_this.uniqid, _this.item.path, time);
+                /*
+
                 Media.thumb({
                     time: time,
                     input: _this.item.path,
@@ -76,6 +79,7 @@
                         _this.item.thumb = src;
                     }
                 });
+                */
             },
             play(){
                 let _this = this,
@@ -210,11 +214,12 @@
         width: calc(100% - 80px);
     }
     .item-frame-step{
-        border: none;
         width: 3em;
         padding: 0;
         border-radius: 2px;
         text-align: center;
+        border: 1px solid var(--controlColor);
+        box-sizing: border-box;
     }
     .disabled .item-frame-step{
         color: var(--controlBg);
